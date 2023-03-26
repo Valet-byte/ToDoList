@@ -23,8 +23,6 @@ func (s ApiServer) Run(conf *config.Config, handler http.Handler) error {
 		WriteTimeout:   conf.Server.Timeout.Write * time.Second,
 	}
 
-	s.log.Info("ApiServer start!")
-
 	return s.server.ListenAndServe()
 }
 
