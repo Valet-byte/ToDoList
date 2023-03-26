@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v2"
 	"os"
 	"time"
@@ -51,5 +52,10 @@ func NewConfig(configPath string) (*Config, error) {
 		return nil, err
 	}
 
+	if err := godotenv.Load(); err != nil {
+		return nil, err
+	}
+
+	config.Server.Database.Password = os.Getenv("DB_PASSWORD")
 	return config, nil
 }
