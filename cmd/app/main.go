@@ -1,9 +1,9 @@
 package main
 
 import (
-	"awesomeProject/internal/app"
 	"flag"
 	"fmt"
+	"todoApp/internal/app"
 )
 
 func main() {

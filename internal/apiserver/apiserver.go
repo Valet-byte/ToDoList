@@ -1,12 +1,12 @@
 package apiserver
 
 import (
-	"awesomeProject/internal/config"
 	"context"
 	"github.com/sirupsen/logrus"
 	"log"
 	"net/http"
 	"time"
+	"todoApp/internal/config"
 )
 
 type ApiServer struct {
@@ -14,8 +14,9 @@ type ApiServer struct {
 	log    *logrus.Logger
 }
 
-func (s ApiServer) Run(conf *config.Config) error {
+func (s ApiServer) Run(conf *config.Config, handler http.Handler) error {
 	s.server = &http.Server{
+		Handler:        handler,
 		Addr:           conf.Server.Host + ":" + conf.Server.Port,
 		MaxHeaderBytes: 1 << conf.Server.MaxHeaderBytes,
 		ReadTimeout:    conf.Server.Timeout.Read * time.Second,
@@ -31,7 +32,7 @@ func (s ApiServer) shutdown(ctx context.Context) error {
 	return s.server.Shutdown(ctx)
 }
 
-func Run(conf *config.Config) error {
+func Run(conf *config.Config, handler http.Handler) error {
 	s := ApiServer{log: logrus.New()}
 
 	level, err := logrus.ParseLevel(conf.Log.Level)
@@ -42,5 +43,5 @@ func Run(conf *config.Config) error {
 
 	s.log.SetLevel(level)
 
-	return s.Run(conf)
+	return s.Run(conf, handler)
 }
