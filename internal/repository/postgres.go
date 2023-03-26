@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"log"
+	"github.com/sirupsen/logrus"
 	"todoApp/internal/config"
 )
 
@@ -19,13 +19,13 @@ func NewPostgresDB(conf *config.Config) *sqlx.DB {
 	))
 
 	if err != nil {
-		log.Fatal("Failed create Postgres DB connection! err :", err)
+		logrus.Fatal("Failed create Postgres DB connection! err :", err)
 	}
 
 	err = db.Ping()
 
 	if err != nil {
-		log.Fatal("Failed connect Postgres DB! err :", err)
+		logrus.Fatal("Failed connect Postgres DB! err :", err)
 	}
 
 	return db

@@ -1,7 +1,7 @@
 package app
 
 import (
-	"log"
+	"github.com/sirupsen/logrus"
 	"todoApp/internal/apiserver"
 	"todoApp/internal/config"
 	"todoApp/internal/handler"
@@ -16,7 +16,7 @@ func Run(configPath string) {
 	conf, err := config.NewConfig(configPath)
 
 	if err != nil {
-		log.Fatal("Not correct configPath! err :", err)
+		logrus.Fatal("Not correct configPath! err :", err)
 	}
 
 	db := repository.NewPostgresDB(conf)
@@ -26,6 +26,6 @@ func Run(configPath string) {
 	h := handler.NewHandler(s)
 
 	if err := apiserver.Run(conf, h.InitHandler()); err != nil {
-		log.Fatal("Can not start apiserver! err :", err)
+		logrus.Fatal("Can not start apiserver! err :", err)
 	}
 }

@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"os"
 	"time"
@@ -55,7 +56,19 @@ func NewConfig(configPath string) (*Config, error) {
 	if err := godotenv.Load(); err != nil {
 		return nil, err
 	}
-
 	config.Server.Database.Password = os.Getenv("DB_PASSWORD")
+
+	logrusInit(config)
+
 	return config, nil
+}
+
+func logrusInit(config *Config) {
+	level, err := logrus.ParseLevel(config.Log.Level)
+
+	if err != nil {
+		logrus.Fatalln("Fatal! Failed set log level! err : %s", err)
+	}
+
+	logrus.SetLevel(level)
 }

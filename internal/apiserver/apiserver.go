@@ -2,8 +2,6 @@ package apiserver
 
 import (
 	"context"
-	"github.com/sirupsen/logrus"
-	"log"
 	"net/http"
 	"time"
 	"todoApp/internal/config"
@@ -11,7 +9,6 @@ import (
 
 type ApiServer struct {
 	server *http.Server
-	log    *logrus.Logger
 }
 
 func (s ApiServer) Run(conf *config.Config, handler http.Handler) error {
@@ -31,15 +28,7 @@ func (s ApiServer) shutdown(ctx context.Context) error {
 }
 
 func Run(conf *config.Config, handler http.Handler) error {
-	s := ApiServer{log: logrus.New()}
-
-	level, err := logrus.ParseLevel(conf.Log.Level)
-
-	if err != nil {
-		log.Fatal("Not correct log level! err :", err)
-	}
-
-	s.log.SetLevel(level)
+	s := ApiServer{}
 
 	return s.Run(conf, handler)
 }
