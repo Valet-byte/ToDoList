@@ -17,6 +17,14 @@ type Config struct {
 			Write  time.Duration `yaml:"write"`
 			Idle   time.Duration `yaml:"idle"`
 		} `yaml:"timeout"`
+		Database struct {
+			Port     string `yaml:"port"`
+			Host     string `yaml:"host"`
+			Username string `yaml:"username"`
+			Password string `yaml:"password"`
+			DbName   string `yaml:"dbName"`
+			SslMode  string `yaml:"sslMode"`
+		} `yaml:"database"`
 	} `yaml:"server"`
 
 	Log struct {

@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_DB: "todoApp"
+      POSTGRES_DB: "todo_app"
       POSTGRES_USER: "todoApp"
       POSTGRES_PASSWORD: "MEGA_UNREAL_SECRET_PASSWORD"
       PGDATA: "/var/lib/postgresql/data/pgdata"

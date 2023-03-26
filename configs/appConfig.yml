@@ -7,6 +7,14 @@ server:
     read: 15
     write: 10
     idle: 5
+  database:
+    port: 5432
+    host: localhost
+    username: "todoApp"
+    password: "MEGA_UNREAL_SECRET_PASSWORD"
+    dbName: "todo_app"
+    sslMode: disable
+
 
 log:
   level: debug

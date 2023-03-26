@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	_ "github.com/lib/pq"
 	"todoApp/internal/app"
 )
 

@@ -18,12 +18,14 @@ func Run(configPath string) {
 	if err != nil {
 		log.Fatal("Not correct configPath! err :", err)
 	}
-	r := repository.NewRepository()
+
+	db := repository.NewPostgresDB(conf)
+
+	r := repository.NewRepository(db)
 	s := service.NewService(r)
 	h := handler.NewHandler(s)
 
 	if err := apiserver.Run(conf, h.InitHandler()); err != nil {
 		log.Fatal("Can not start apiserver! err :", err)
 	}
-
 }
