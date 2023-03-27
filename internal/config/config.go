@@ -28,10 +28,15 @@ type Config struct {
 			SslMode  string `yaml:"sslMode"`
 		} `yaml:"database"`
 	} `yaml:"server"`
-
 	Log struct {
 		Level string `yaml:"level"`
 	} `yaml:"log"`
+
+	Jwt struct {
+		ExpiresAt int
+		JwtKye    string
+	} `yaml:"jwt"`
+	PasswordSalt string
 }
 
 func NewConfig(configPath string) (*Config, error) {
@@ -57,6 +62,8 @@ func NewConfig(configPath string) (*Config, error) {
 		return nil, err
 	}
 	config.Server.Database.Password = os.Getenv("DB_PASSWORD")
+	config.Jwt.JwtKye = os.Getenv("JWT_KEY")
+	config.PasswordSalt = os.Getenv("PASSWORD_SALT")
 
 	logrusInit(config)
 

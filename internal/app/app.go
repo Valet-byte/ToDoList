@@ -22,7 +22,7 @@ func Run(configPath string) {
 
 	var postgresDB = db.NewPostgresDB(conf)
 	r := repository.NewRepository(postgresDB)
-	s := service.NewService(r)
+	s := service.NewService(r, conf.Jwt.JwtKye, conf.PasswordSalt, conf.Jwt.ExpiresAt)
 	h := handler.NewHandler(s)
 
 	if err := apiserver.Run(conf, h.InitHandler()); err != nil {

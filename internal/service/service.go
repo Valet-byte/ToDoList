@@ -7,6 +7,7 @@ import (
 
 type AuthorizationService interface {
 	CreateUser(user model.User) (int64, error)
+	GenerateToken(username, password string) (string, error)
 }
 
 type TodoListService interface {
@@ -21,8 +22,8 @@ type Service struct {
 	ItemService
 }
 
-func NewService(repository *repository.Repository) *Service {
+func NewService(repository *repository.Repository, jwtKey, passwordSalt string, tokenExpiresAt int) *Service {
 	return &Service{
-		AuthorizationService: NewAuthService(repository),
+		AuthorizationService: NewAuthService(repository, jwtKey, passwordSalt, tokenExpiresAt),
 	}
 }

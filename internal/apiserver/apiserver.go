@@ -14,7 +14,7 @@ type ApiServer struct {
 func (s ApiServer) Run(conf *config.Config, handler http.Handler) error {
 	s.server = &http.Server{
 		Handler:        handler,
-		Addr:           ":" + conf.Server.Port,
+		Addr:           conf.Server.Host + ":" + conf.Server.Port,
 		MaxHeaderBytes: 1 << conf.Server.MaxHeaderBytes,
 		ReadTimeout:    5 * time.Second,
 		WriteTimeout:   5 * time.Second,
