@@ -2,6 +2,7 @@ package service
 
 import (
 	"crypto/sha512"
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"time"
@@ -31,7 +32,25 @@ func NewAuthService(repo *repository.Repository, jwtKey, passwordSalt string, ex
 			expiresAt: expiresAt,
 		},
 	}
+}
 
+func (s *AuthService) ParseToken(accesToken string) (int64, error) {
+	token, err := jwt.ParseWithClaims(accesToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("invalid sign method")
+		}
+		return []byte(s.jwtKey), nil
+	})
+
+	if err != nil {
+		return -1, err
+	}
+	claims, ok := token.Claims.(*tokenClaims)
+	if !ok {
+		return -1, errors.New("invalid claims")
+	}
+
+	return claims.UserId, nil
 }
 
 func (s *AuthService) CreateUser(user model.User) (int64, error) {

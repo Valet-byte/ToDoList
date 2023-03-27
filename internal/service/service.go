@@ -8,6 +8,7 @@ import (
 type AuthorizationService interface {
 	CreateUser(user model.User) (int64, error)
 	GenerateToken(username, password string) (string, error)
+	ParseToken(token string) (int64, error)
 }
 
 type TodoListService interface {
