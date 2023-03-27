@@ -14,10 +14,10 @@ type ApiServer struct {
 func (s ApiServer) Run(conf *config.Config, handler http.Handler) error {
 	s.server = &http.Server{
 		Handler:        handler,
-		Addr:           conf.Server.Host + ":" + conf.Server.Port,
+		Addr:           ":" + conf.Server.Port,
 		MaxHeaderBytes: 1 << conf.Server.MaxHeaderBytes,
-		ReadTimeout:    conf.Server.Timeout.Read * time.Second,
-		WriteTimeout:   conf.Server.Timeout.Write * time.Second,
+		ReadTimeout:    5 * time.Second,
+		WriteTimeout:   5 * time.Second,
 	}
 
 	return s.server.ListenAndServe()

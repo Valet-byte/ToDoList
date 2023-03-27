@@ -1,10 +1,18 @@
-package repository
+package db
 
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 	"todoApp/internal/config"
+)
+
+const (
+	UserTable     = "\"user\""
+	ListTable     = "todo_list"
+	ItemTable     = "todo_item"
+	UserListTable = "users_lists"
+	ItemListTable = "items_lists"
 )
 
 func NewPostgresDB(conf *config.Config) *sqlx.DB {

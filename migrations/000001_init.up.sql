@@ -2,7 +2,7 @@ create table "user"(
     id bigserial primary key,
     name varchar(255) not null,
     username varchar(255) not null unique,
-    password varchar(255) not null
+    password text not null
 );
 
 create table todo_list(

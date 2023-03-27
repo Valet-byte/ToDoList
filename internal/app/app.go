@@ -6,6 +6,7 @@ import (
 	"todoApp/internal/config"
 	"todoApp/internal/handler"
 	"todoApp/internal/repository"
+	"todoApp/internal/repository/db"
 	"todoApp/internal/service"
 )
 
@@ -19,9 +20,8 @@ func Run(configPath string) {
 		logrus.Fatal("Not correct configPath! err :", err)
 	}
 
-	db := repository.NewPostgresDB(conf)
-
-	r := repository.NewRepository(db)
+	var postgresDB = db.NewPostgresDB(conf)
+	r := repository.NewRepository(postgresDB)
 	s := service.NewService(r)
 	h := handler.NewHandler(s)
 
