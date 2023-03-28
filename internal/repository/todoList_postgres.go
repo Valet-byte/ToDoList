@@ -47,3 +47,11 @@ func (r *ListRepository) FindAll(userId int64) ([]model.ToDoList, error) {
 	err := r.db.Select(&lists, query, userId)
 	return lists, err
 }
+
+func (r *ListRepository) FindById(userId, listId int64) (model.ToDoList, error) {
+	var list model.ToDoList
+	query := "SELECT tl.id, tl.title, tl.description from todo_list tl INNER JOIN users_lists ul on tl.id = ul.list_id WHERE ul.user_id = $1 AND ul.list_id = $2"
+
+	err := r.db.Get(&list, query, userId, listId)
+	return list, err
+}

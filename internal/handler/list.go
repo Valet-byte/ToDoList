@@ -2,7 +2,9 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"net/http"
+	"strconv"
 	"todoApp/internal/model"
 )
 
@@ -31,7 +33,26 @@ func (h *Handler) updateList(context *gin.Context) {
 }
 
 func (h *Handler) getListById(context *gin.Context) {
+	userId, err := getUserId(context)
+	if err != nil {
+		return
+	}
 
+	listId, err := strconv.ParseInt(context.Param("id"), 0, 64)
+	if err != nil {
+		logrus.Error("1")
+		newErrorResponse(context, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	list, err := h.service.TodoListService.GetById(userId, listId)
+	if err != nil {
+		logrus.Error("2")
+		newErrorResponse(context, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	context.JSON(http.StatusOK, list)
 }
 
 type getAllListResponse struct {
