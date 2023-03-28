@@ -34,7 +34,24 @@ func (h *Handler) getListById(context *gin.Context) {
 
 }
 
+type getAllListResponse struct {
+	Lists []model.ToDoList `json:"data"`
+}
+
 func (h *Handler) getAllLists(context *gin.Context) {
+
+	userId, err := getUserId(context)
+	if err != nil {
+		return
+	}
+
+	lists, err := h.service.TodoListService.GetAll(userId)
+	if err != nil {
+		newErrorResponse(context, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	context.JSON(http.StatusOK, getAllListResponse{Lists: lists})
 
 }
 

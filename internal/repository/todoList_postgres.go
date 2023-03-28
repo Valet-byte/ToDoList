@@ -40,3 +40,10 @@ func (r *ListRepository) AddList(userId int64, list model.ToDoList) (int64, erro
 
 	return listId, tx.Commit()
 }
+func (r *ListRepository) FindAll(userId int64) ([]model.ToDoList, error) {
+	var lists []model.ToDoList
+	query := "SELECT tl.id, tl.title, tl.description from todo_list tl INNER JOIN users_lists ul on tl.id = ul.list_id WHERE ul.user_id = $1"
+
+	err := r.db.Select(&lists, query, userId)
+	return lists, err
+}

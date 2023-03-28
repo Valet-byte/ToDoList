@@ -12,6 +12,7 @@ type AuthorizationRepository interface {
 
 type TodoListRepository interface {
 	AddList(userId int64, list model.ToDoList) (int64, error)
+	FindAll(userId int64) ([]model.ToDoList, error)
 }
 
 type ItemSRepository interface {
