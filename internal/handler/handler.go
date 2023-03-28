@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"todoApp/internal/service"
 )
 
@@ -45,4 +47,20 @@ func (h *Handler) InitHandler() *gin.Engine {
 	}
 
 	return router
+}
+
+func getUserId(con *gin.Context) (int64, error) {
+	id, ok := con.Get(userId)
+	if !ok {
+		newErrorResponse(con, http.StatusUnauthorized, "User id not found!")
+		return -1, errors.New("user id not found")
+	}
+
+	intId, ok := id.(int64)
+	if !ok {
+		newErrorResponse(con, http.StatusUnauthorized, "Incorrect user id!")
+		return -1, errors.New("incorrect user id")
+	}
+
+	return intId, nil
 }

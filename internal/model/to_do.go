@@ -2,7 +2,7 @@ package model
 
 type ToDoList struct {
 	Id          int64  `json:"id"`
-	Title       string `json:"title"`
+	Title       string `json:"title" binding:"required"`
 	Description string `json:"description"`
 }
 

@@ -11,6 +11,7 @@ type AuthorizationRepository interface {
 }
 
 type TodoListRepository interface {
+	AddList(userId int64, list model.ToDoList) (int64, error)
 }
 
 type ItemSRepository interface {
@@ -25,5 +26,6 @@ type Repository struct {
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		AuthorizationRepository: NewAuthRepository(db),
+		TodoListRepository:      NewToDoListRepository(db),
 	}
 }

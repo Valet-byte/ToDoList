@@ -19,13 +19,13 @@ type keys struct {
 const expiresAt = 12
 
 type AuthService struct {
-	repo *repository.Repository
+	repo repository.AuthorizationRepository
 	keys
 }
 
-func NewAuthService(repo *repository.Repository, jwtKey, passwordSalt string, expiresAt int) *AuthService {
+func NewAuthService(repo *repository.AuthorizationRepository, jwtKey, passwordSalt string, expiresAt int) *AuthService {
 	return &AuthService{
-		repo: repo,
+		repo: *repo,
 		keys: keys{
 			jwtKey:    jwtKey,
 			salt:      passwordSalt,
@@ -55,7 +55,7 @@ func (s *AuthService) ParseToken(accesToken string) (int64, error) {
 
 func (s *AuthService) CreateUser(user model.User) (int64, error) {
 	user.Password = s.createHashPassword(user.Password)
-	return s.repo.AuthorizationRepository.AddUser(user)
+	return s.repo.AddUser(user)
 }
 
 type tokenClaims struct {
@@ -64,7 +64,7 @@ type tokenClaims struct {
 }
 
 func (s *AuthService) GenerateToken(username, password string) (string, error) {
-	u, err := s.repo.AuthorizationRepository.GetUser(username, s.createHashPassword(password))
+	u, err := s.repo.GetUser(username, s.createHashPassword(password))
 	if err != nil {
 		return "", err
 	}
