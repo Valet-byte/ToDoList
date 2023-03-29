@@ -16,6 +16,7 @@ type TodoListService interface {
 	GetAll(userId int64) ([]model.ToDoList, error)
 	GetById(userId, listId int64) (model.ToDoList, error)
 	DeleteList(userId, listId int64) error
+	Update(userId, listId int64, input model.UpdateListInput) error
 }
 
 type ItemService interface {

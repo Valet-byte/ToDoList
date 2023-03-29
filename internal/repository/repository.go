@@ -15,6 +15,7 @@ type TodoListRepository interface {
 	FindAll(userId int64) ([]model.ToDoList, error)
 	FindById(userId, listId int64) (model.ToDoList, error)
 	Delete(userId, listId int64) error
+	UpdateList(userId, listId int64, input model.UpdateListInput) error
 }
 
 type ItemSRepository interface {

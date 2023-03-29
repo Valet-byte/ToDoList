@@ -2,7 +2,10 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
+	"strings"
 	"todoApp/internal/model"
 )
 
@@ -69,5 +72,37 @@ func (r *ListRepository) Delete(userId, listId int64) error {
 	if in == 0 {
 		return errors.New("not delete list")
 	}
+	return err
+}
+
+func (r *ListRepository) UpdateList(userId, listId int64, input model.UpdateListInput) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	var argId = 1
+
+	if input.Title != nil {
+		setValues = append(setValues, fmt.Sprintf("title=$%d", argId))
+		args = append(args, *input.Title)
+		argId++
+	}
+
+	if input.Description != nil {
+		setValues = append(setValues, fmt.Sprintf("description=$%d", argId))
+		args = append(args, *input.Description)
+		argId++
+	}
+
+	setQuery := strings.Join(setValues, ", ")
+
+	query := fmt.Sprintf("UPDATE todo_list tl SET %s FROM users_lists ul WHERE tl.id = ul.list_id AND ul.list_id = $%d AND ul.user_id = $%d",
+		setQuery, argId, argId+1)
+
+	args = append(args, listId, userId)
+
+	logrus.Debugf("Query : %s", query)
+	logrus.Debugf("Args : %s", args)
+
+	_, err := r.db.Exec(query, args...)
+
 	return err
 }

@@ -28,7 +28,30 @@ func (h *Handler) createList(context *gin.Context) {
 }
 
 func (h *Handler) updateList(context *gin.Context) {
+	userId, err := getUserId(context)
+	if err != nil {
+		return
+	}
 
+	var input = model.UpdateListInput{}
+	if err := context.BindJSON(&input); err != nil {
+		newErrorResponse(context, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	listId, err := strconv.ParseInt(context.Param("id"), 0, 64)
+	if err != nil {
+		newErrorResponse(context, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = h.service.TodoListService.Update(userId, listId, input)
+	if err != nil {
+		newErrorResponse(context, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	context.JSON(http.StatusOK, StatusResponse{Status: "ok"})
 }
 
 func (h *Handler) getListById(context *gin.Context) {
