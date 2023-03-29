@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"github.com/jmoiron/sqlx"
 	"todoApp/internal/model"
 )
@@ -54,4 +55,19 @@ func (r *ListRepository) FindById(userId, listId int64) (model.ToDoList, error) 
 
 	err := r.db.Get(&list, query, userId, listId)
 	return list, err
+}
+
+func (r *ListRepository) Delete(userId, listId int64) error {
+	query := "delete from todo_list tl USING users_lists ul where tl.id = ul.list_id AND ul.user_id = $1 AND ul.list_id = $2"
+
+	row, err := r.db.Exec(query, userId, listId)
+	in, er := row.RowsAffected()
+	if er != nil {
+		return er
+	}
+
+	if in == 0 {
+		return errors.New("not delete list")
+	}
+	return err
 }

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 	"todoApp/internal/model"
@@ -40,14 +39,12 @@ func (h *Handler) getListById(context *gin.Context) {
 
 	listId, err := strconv.ParseInt(context.Param("id"), 0, 64)
 	if err != nil {
-		logrus.Error("1")
 		newErrorResponse(context, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	list, err := h.service.TodoListService.GetById(userId, listId)
 	if err != nil {
-		logrus.Error("2")
 		newErrorResponse(context, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -78,4 +75,22 @@ func (h *Handler) getAllLists(context *gin.Context) {
 
 func (h *Handler) deleteList(context *gin.Context) {
 
+	userId, err := getUserId(context)
+	if err != nil {
+		return
+	}
+
+	listId, err := strconv.ParseInt(context.Param("id"), 0, 64)
+	if err != nil {
+		newErrorResponse(context, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = h.service.DeleteList(userId, listId)
+
+	if err != nil {
+		newErrorResponse(context, http.StatusInternalServerError, err.Error())
+		return
+	}
+	context.JSON(http.StatusOK, StatusResponse{Status: "ok"})
 }

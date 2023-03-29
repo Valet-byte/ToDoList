@@ -33,7 +33,7 @@ func (h *Handler) InitHandler() *gin.Engine {
 			lists.GET("/", h.getAllLists)
 			lists.GET("/:id", h.getListById)
 			lists.PUT("/:id", h.updateList)
-			lists.DELETE("/:id", h.updateList)
+			lists.DELETE("/:id", h.deleteList)
 		}
 
 		items := lists.Group(":id/items")
