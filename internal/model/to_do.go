@@ -13,10 +13,10 @@ type UserList struct {
 }
 
 type ToDoItem struct {
-	Id          int64  `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	IsCompleted bool   `json:"isCompleted"`
+	Id          int64  `json:"id" db:"id"`
+	Title       string `json:"title" db:"title"`
+	Description string `json:"description" db:"description"`
+	IsCompleted bool   `json:"isCompleted" db:"is_completed"`
 }
 
 type ItemList struct {
