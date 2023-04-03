@@ -26,3 +26,7 @@ func (s *ItemService) CreateItemList(userId, listId int64, item model.ToDoItem) 
 	}
 	return s.repo.AddItemList(listId, item)
 }
+
+func (s *ItemService) GetAll(userId, listId int64) ([]model.ToDoItem, error) {
+	return s.repo.FindAll(userId, listId)
+}
